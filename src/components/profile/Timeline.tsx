@@ -43,7 +43,7 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
             <div
               key={index}
               className={`relative flex items-center group ${
-                index % 2 === 0 ? 'md:flex-row-reverse' : ''
+                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}
             >
               {/* Event Dot */}
@@ -58,9 +58,13 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
                     index % 2 === 0 ? 'md:text-left' : 'md:text-right'
                   }`}
                 >
-                  <div className={`absolute top-6 -left-2 md:-left-auto md:-right-2 w-4 h-4 bg-white/5 border-l border-b border-white/10 transform rotate-45 ${
-                    index % 2 === 0 ? 'md:left-auto md:-right-2 md:rotate-[225deg]' : 'md:-left-2 md:rotate-45'
-                  }`}></div>
+                  {/* Arrow */}
+                  <div className={`absolute top-6 w-4 h-4 bg-[#1a1a1a] border-white/10 transform rotate-45 
+                    ${index % 2 === 0 
+                      ? '-left-2 border-l border-b' 
+                      : 'md:-right-2 md:border-r md:border-t -left-2 border-l border-b'
+                    }`}
+                  ></div>
                   
                   <span className="text-4xl font-black text-white/20 mb-1 block">
                     {event.year}
