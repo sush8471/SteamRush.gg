@@ -3,8 +3,8 @@ import { supabase } from '@/lib/supabase';
 
 export const runtime = 'edge';
 
-export default async function Image({ params }: { params: { username: string } }) {
-  const { username } = params;
+export default async function Image({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
 
   const { data: client } = await supabase
     .from('clients')
