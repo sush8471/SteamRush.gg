@@ -6,142 +6,107 @@ import HallOfFame from "@/components/profile/HallOfFame";
 import GamerPersonality from "@/components/profile/GamerPersonality";
 import ProfileFooter from "@/components/profile/ProfileFooter";
 import ThemeWrapper from "@/components/profile/ThemeWrapper";
+import { supabase } from "@/lib/supabase";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
-const dummyGames = [
-  {
-    title: "Elden Ring",
-    coverArtUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=2071&auto=format&fit=crop",
-    hoursPlayed: 245,
-    platform: "PC",
-    completionPercent: 100,
-    personalRating: 10,
-    moodTag: "grind" as const,
-    memory: "The first time I defeated Malenia after 50+ attempts was pure euphoria.",
-    isFavorite: true,
-  },
-  {
-    title: "The Witcher 3: Wild Hunt",
-    coverArtUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
-    hoursPlayed: 320,
-    platform: "PS5",
-    completionPercent: 95,
-    personalRating: 10,
-    moodTag: "emotional" as const,
-    memory: "Watching the sunrise in Kaer Morhen is a moment I'll never forget.",
-    isFavorite: true,
-  },
-  {
-    title: "Stardew Valley",
-    coverArtUrl: "https://images.unsplash.com/photo-1580234811497-9bd7fd2f357d?q=80&w=2070&auto=format&fit=crop",
-    hoursPlayed: 180,
-    platform: "Nintendo Switch",
-    completionPercent: 60,
-    personalRating: 8,
-    moodTag: "chill" as const,
-    memory: "Spent an entire rainy Sunday just fishing and listening to the soundtrack.",
-    isFavorite: false,
-  },
-  {
-    title: "Sekiro: Shadows Die Twice",
-    coverArtUrl: "https://images.unsplash.com/photo-1627850604058-52e40de1b847?q=80&w=2070&auto=format&fit=crop",
-    hoursPlayed: 85,
-    platform: "PC",
-    completionPercent: 40,
-    personalRating: 9,
-    moodTag: "rage" as const,
-    memory: "The combat system clicked for me at Genichiro, and it's been a dance since then.",
-    isFavorite: false,
-  }
-];
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
+  const { username } = await params;
+  
+  const { data: client } = await supabase
+    .from("clients")
+    .select("display_name, tagline")
+    .eq("username", username)
+    .single();
 
-const dummyTimeline = [
-  {
-    year: "2012",
-    title: "The Beginning",
-    description: "Picked up a controller for the first time and started my journey in Skyrim.",
-    eventType: "milestone" as const
-  },
-  {
-    year: "2015",
-    title: "First Competition",
-    description: "Entered a local CS:GO tournament and learned the true meaning of pressure.",
-    eventType: "achievement" as const
-  },
-  {
-    year: "2018",
-    title: "The Slump",
-    description: "Burned out after trying to go pro. Took a long break to find the fun again.",
-    eventType: "struggle" as const
-  },
-  {
-    year: "2021",
-    title: "Soulslike Awakening",
-    description: "Beat Dark Souls 1-3 back-to-back. Discovered a new love for challenge.",
-    eventType: "milestone" as const
-  },
-  {
-    year: "2024",
-    title: "SteamRush Legend",
-    description: "Reached 100% completion on Elden Ring and shared my journey here.",
-    eventType: "achievement" as const
+  if (!client) {
+    return {
+      title: "Profile Not Found | SteamRush.gg",
+    };
   }
-];
 
-const dummyAchievements = [
-  {
-    title: "God Slain",
-    game: "Elden Ring",
-    difficulty: "legendary" as const,
-    description: "Defeated every main boss including all secret demigods in a single playthrough."
-  },
-  {
-    title: "No-Hit Run",
-    game: "Sekiro",
-    difficulty: "nightmare" as const,
-    description: "Successfully completed the entire game without taking a single direct hit from an enemy."
-  },
-  {
-    title: "The Ultimate Farmer",
-    game: "Stardew Valley",
-    difficulty: "hardcore" as const,
-    description: "Reached Year 10 and achieved maximum friendship with every single townsperson."
-  }
-];
+  return {
+    title: `${client.display_name} | SteamRush.gg`,
+    description: client.tagline,
+    openGraph: {
+      title: `${client.display_name}'s Gaming Journey`,
+      description: client.tagline,
+      type: "website",
+    },
+  };
+}
 
 export default async function GamerProfilePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
-  const theme = "cyberpunk"; // This could come from the user's data in the future
+
+  // Fetch client data
+  const { data: client, error: clientError } = await supabase
+    .from("clients")
+    .select("*")
+    .eq("username", username)
+    .single();
+
+  if (clientError || !client || !client.is_published) {
+    notFound();
+  }
+
+  // Fetch related data in parallel
+  const [
+    { data: stats },
+    { data: games },
+    { data: timeline },
+    { data: achievements },
+    { data: personality }
+  ] = await Promise.all([
+    supabase.from("stats").select("*").eq("client_id", client.id).single(),
+    supabase.from("games").select("*").eq("client_id", client.id).order("sort_order", { ascending: true }),
+    supabase.from("timeline").select("*").eq("client_id", client.id).order("sort_order", { ascending: true }),
+    supabase.from("hall_of_fame").select("*").eq("client_id", client.id),
+    supabase.from("personality").select("*").eq("client_id", client.id).single()
+  ]);
+
+  const theme = (client.theme || "cyberpunk") as any;
 
   return (
     <ThemeWrapper theme={theme}>
       <main className="p-4 md:p-8 space-y-12">
         <HeroSection
-          displayName={username}
-          tagline="Elite Gamer | Streamer | Pro Competitor"
-          avatarUrl="https://images.unsplash.com/photo-1566333340332-94441ba497a1?q=80&w=2070&auto=format&fit=crop"
-          coverImageUrl="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop"
+          displayName={client.display_name}
+          tagline={client.tagline}
+          avatarUrl={client.avatar_url}
+          coverImageUrl={client.cover_image_url}
           theme={theme}
         />
 
-        <StatsGrid
-          totalGames={dummyGames.length}
-          totalHours={750}
-          completedGames={dummyGames.filter(g => g.completionPercent === 100).length}
-          favoriteGenre="FPS / RPG"
-          yearsGaming={12}
-          platforms={["PC", "PS5", "Nintendo Switch"]}
-        />
+        {stats && (
+          <StatsGrid
+            totalGames={stats.total_games}
+            totalHours={stats.total_hours}
+            completedGames={stats.completed_games}
+            favoriteGenre={stats.favorite_genre}
+            yearsGaming={stats.years_gaming}
+            platforms={stats.platforms || []}
+          />
+        )}
 
-        <GamerPersonality 
-          gamerType="The Completionist"
-          description="Driven by the allure of 100% trophies and hidden achievements, this gamer leaves no stone unturned. Every secret is a challenge, and every side quest is a mandatory mission."
-        />
+        {personality && (
+          <GamerPersonality 
+            gamerType={personality.gamer_type}
+            description={personality.description}
+          />
+        )}
 
-        <HallOfFame achievements={dummyAchievements} />
+        {achievements && achievements.length > 0 && (
+          <HallOfFame achievements={achievements as any} />
+        )}
 
-        <GamesSection games={dummyGames} />
+        {games && games.length > 0 && (
+          <GamesSection games={games as any} />
+        )}
 
-        <Timeline events={dummyTimeline} />
+        {timeline && timeline.length > 0 && (
+          <Timeline events={timeline as any} />
+        )}
 
         <ProfileFooter />
       </main>
