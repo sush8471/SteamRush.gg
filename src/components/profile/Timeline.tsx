@@ -43,7 +43,7 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
             <div
               key={index}
               className={`relative flex items-center group ${
-                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'
               }`}
             >
               {/* Event Dot */}
