@@ -31,7 +31,7 @@ export default function GameCard({
   memory,
   isFavorite,
 }: GameCardProps) {
-  const moodColorClass = moodTagColors[moodTag.toLowerCase()] || "bg-zinc-500/20 text-zinc-400 border-zinc-500/30";
+  const moodColorClass = moodTagColors[(moodTag || "").toLowerCase()] || "bg-zinc-500/20 text-zinc-400 border-zinc-500/30";
 
   return (
     <div className="group relative bg-zinc-900/50 backdrop-blur-sm border border-white/5 rounded-xl overflow-hidden hover:border-blue-500/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] transition-all duration-300">
@@ -54,7 +54,7 @@ export default function GameCard({
 
         {/* Mood Tag */}
         <div className={`absolute bottom-3 left-3 px-2 py-0.5 rounded-full text-[10px] font-medium border backdrop-blur-md ${moodColorClass}`}>
-          {moodTag.toUpperCase()}
+          {(moodTag || "CHILL").toUpperCase()}
         </div>
       </div>
 
