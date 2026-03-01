@@ -173,6 +173,8 @@ export default function GamerProfilePage({ params }: { params: { username: strin
       <GamesSection games={dummyGames} />
 
       <Timeline events={dummyTimeline} />
+
+      <ProfileFooter />
     </main>
   );
 }
