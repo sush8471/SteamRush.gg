@@ -50,9 +50,6 @@ export default async function GamerProfilePage({ params }: { params: Promise<{ u
     notFound();
   }
 
-  // Debug: log fetched client data
-  console.log('Fetched client:', client.username);
-
   // Fetch related data in parallel
   const [
     { data: stats },
