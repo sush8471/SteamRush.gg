@@ -32,7 +32,7 @@ const dummyGames = [
   },
   {
     title: "Stardew Valley",
-    coverArtUrl: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop",
+    coverArtUrl: "https://images.unsplash.com/photo-1580234811497-9bd7fd2f357d?q=80&w=2070&auto=format&fit=crop",
     hoursPlayed: 180,
     platform: "Nintendo Switch",
     completionPercent: 60,
@@ -43,7 +43,7 @@ const dummyGames = [
   },
   {
     title: "Sekiro: Shadows Die Twice",
-    coverArtUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop",
+    coverArtUrl: "https://images.unsplash.com/photo-1627850604058-52e40de1b847?q=80&w=2070&auto=format&fit=crop",
     hoursPlayed: 85,
     platform: "PC",
     completionPercent: 40,
@@ -118,7 +118,7 @@ export default async function GamerProfilePage({ params }: { params: Promise<{ u
         <HeroSection
           displayName={username}
           tagline="Elite Gamer | Streamer | Pro Competitor"
-          avatarUrl="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop"
+          avatarUrl="https://images.unsplash.com/photo-1566333340332-94441ba497a1?q=80&w=2070&auto=format&fit=crop"
           coverImageUrl="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop"
           theme={theme}
         />
