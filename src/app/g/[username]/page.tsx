@@ -161,6 +161,8 @@ export default function GamerProfilePage({ params }: { params: { username: strin
         platforms={["PC", "PS5", "Nintendo Switch"]}
       />
 
+      <HallOfFame achievements={dummyAchievements} />
+
       <GamesSection games={dummyGames} />
 
       <Timeline events={dummyTimeline} />
