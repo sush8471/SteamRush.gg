@@ -162,6 +162,11 @@ export default function GamerProfilePage({ params }: { params: { username: strin
         platforms={["PC", "PS5", "Nintendo Switch"]}
       />
 
+      <GamerPersonality 
+        gamerType="The Completionist"
+        description="Driven by the allure of 100% trophies and hidden achievements, this gamer leaves no stone unturned. Every secret is a challenge, and every side quest is a mandatory mission."
+      />
+
       <HallOfFame achievements={dummyAchievements} />
 
       <GamesSection games={dummyGames} />
