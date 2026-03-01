@@ -3,6 +3,7 @@ import StatsGrid from "@/components/profile/StatsGrid";
 import GamesSection from "@/components/profile/GamesSection";
 import Timeline, { TimelineEvent } from "@/components/profile/Timeline";
 import HallOfFame from "@/components/profile/HallOfFame";
+import GamerPersonality from "@/components/profile/GamerPersonality";
 
 const dummyGames = [
   {
