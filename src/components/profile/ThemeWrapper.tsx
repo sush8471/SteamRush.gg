@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode } from 'react';
 
 interface ThemeWrapperProps {
@@ -73,12 +75,6 @@ export default function ThemeWrapper({ theme, children }: ThemeWrapperProps) {
       data-theme={theme}
     >
       <style jsx global>{`
-        :root {
-          --accent-primary: #ffffff;
-          --accent-secondary: #52525b;
-          --accent-glow: rgba(255, 255, 255, 0.15);
-        }
-
         /* Support for using these variables in Tailwind */
         .bg-accent { background-color: var(--accent-primary); }
         .text-accent { color: var(--accent-primary); }
