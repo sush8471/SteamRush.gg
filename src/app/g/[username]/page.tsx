@@ -67,10 +67,11 @@ export default async function GamerProfilePage({ params }: { params: Promise<{ u
 
   const theme = (client.theme || "cyberpunk") as any;
 
-  return (
-    <ThemeWrapper theme={theme}>
-      <main className="p-4 md:p-8 space-y-12">
-        <HeroSection
+    return (
+      <ThemeWrapper theme={theme}>
+        <main className="p-4 md:p-8 space-y-12 animate-[fade-in_0.8s_ease-out_forwards]">
+          <HeroSection
+
           displayName={client.display_name}
           tagline={client.tagline}
           avatarUrl={client.avatar_url}
