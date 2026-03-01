@@ -2,6 +2,7 @@ import HeroSection from "@/components/profile/HeroSection";
 import StatsGrid from "@/components/profile/StatsGrid";
 import GamesSection from "@/components/profile/GamesSection";
 import Timeline, { TimelineEvent } from "@/components/profile/Timeline";
+import HallOfFame from "@/components/profile/HallOfFame";
 
 const dummyGames = [
   {
