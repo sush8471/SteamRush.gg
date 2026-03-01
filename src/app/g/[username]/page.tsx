@@ -101,11 +101,30 @@ export default async function GamerProfilePage({ params }: { params: Promise<{ u
         )}
 
         {games && games.length > 0 && (
-          <GamesSection games={games as any} />
+          <GamesSection 
+            games={games.map(g => ({
+              title: g.title,
+              coverArtUrl: g.cover_art_url,
+              hoursPlayed: g.hours_played,
+              platform: g.platform,
+              completionPercent: g.completion_percent,
+              personalRating: g.personal_rating,
+              moodTag: g.mood_tag,
+              memory: g.memory,
+              isFavorite: g.is_favorite
+            }))} 
+          />
         )}
 
         {timeline && timeline.length > 0 && (
-          <Timeline events={timeline as any} />
+          <Timeline 
+            events={timeline.map(e => ({
+              year: e.year,
+              title: e.title,
+              description: e.description,
+              eventType: e.event_type as any
+            }))} 
+          />
         )}
 
         <ProfileFooter />
