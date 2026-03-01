@@ -112,6 +112,33 @@ const dummyTimeline: TimelineEvent[] = [
   },
 ];
 
+const dummyAchievements: any[] = [
+  {
+    title: "The Godslayer",
+    game: "Elden Ring",
+    difficulty: "legendary",
+    description: "Defeated Malenia, Blade of Miquella, using only a level 1 Wretch with no armor.",
+  },
+  {
+    title: "Grandmaster of the Rift",
+    game: "League of Legends",
+    difficulty: "hardcore",
+    description: "Maintained a 65% win rate over 200 games while playing from a high-latency region.",
+  },
+  {
+    title: "Speed Demon",
+    game: "Sekiro: Shadows Die Twice",
+    difficulty: "nightmare",
+    description: "Completed a Shura ending speedrun in under 45 minutes on a live stream.",
+  },
+  {
+    title: "Pacifist Master",
+    game: "The Witcher 3",
+    difficulty: "hardcore",
+    description: "Finished the main story questline without taking a single point of unnecessary damage.",
+  },
+];
+
 export default function GamerProfilePage({ params }: { params: { username: string } }) {
   const { username } = params;
 
