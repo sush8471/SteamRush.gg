@@ -108,8 +108,8 @@ const dummyAchievements = [
   }
 ];
 
-export default function GamerProfilePage({ params }: { params: { username: string } }) {
-  const { username } = params;
+export default async function GamerProfilePage({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = await params;
   const theme = "cyberpunk"; // This could come from the user's data in the future
 
   return (
